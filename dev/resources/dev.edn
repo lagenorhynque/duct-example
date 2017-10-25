@@ -1,0 +1,5 @@
+{:duct.core/environment :development
+ :duct.core/include ["duct_example/config"]
+
+ :duct.module/sql
+ {:database-url "jdbc:sqlite:db/dev.sqlite"}}

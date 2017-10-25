@@ -1,0 +1,23 @@
+{:duct.core/project-ns  duct-example
+ :duct.core/environment :production
+
+ :duct.module/logging {}
+ :duct.module.web/api {}
+ :duct.module/sql {}
+
+ :duct.module/ataraxy
+ {"/things"
+  {[:post {thing :body-params}] [:thing/create thing]
+   [:get] [:thing/list]
+   [:get "/" id] [:thing/fetch ^int id]}}
+
+ :duct-example.handler.thing/create {:db #ig/ref :duct.database/sql}
+ :duct-example.handler.thing/list {:db #ig/ref :duct.database/sql}
+ :duct-example.handler.thing/fetch {:db #ig/ref :duct.database/sql}
+
+ :duct.migrator/ragtime
+ {:migrations [#ig/ref :duct-example.migration/create-things]}
+
+ [:duct.migrator.ragtime/sql :duct-example.migration/create-things]
+ {:up ["CREATE TABLE things (id INTEGER PRIMARY KEY, name TEXT, quantity INTEGER)"]
+  :down ["DROP TABLE things"]}}
